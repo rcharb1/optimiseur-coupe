@@ -23,7 +23,7 @@ Sans avoir vérifier ces trois conditions (5 éléments, présence de ODC-START,
 
 ## Envoi des résultats
 
-`"ODC-START!barre/tronçon;tronçon;...|barre/tronçon;tronçon;...|barre/tronçon;tronçon;...!rendementTotal!barreRest;barreRest;...!tronRest;tronRest;...!ODC-END"`
+`"ODC-START!barre/tronçon;tronçon;.../rendement|barre/tronçon;tronçon;.../rendement|barre/tronçon;tronçon;.../rendement!rendementTotal!barreRest;barreRest;...!tronRest;tronRest;...!ODC-END"`
 
 Le client doit vérifier que la QStringList renvoyée par `message.split('!')` contient bien 6 éléments, qui sont:
 1. ODC-START
