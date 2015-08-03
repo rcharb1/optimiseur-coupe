@@ -1,21 +1,18 @@
 Optimiseur de coupe - Protocole pour le réseau
 ===
 
+Toutes les valeurs sont en mm.
+
+L'utilisation de plusieurs séparateurs (`!|;/`) permet d'utiliser plusieurs fois la fonction QString::split() plus facilement.
+
 ## Envoi du formulaire de saisie
 String de type :
 
-`"ODC-START;[[taille;nb];[taille;nb]; ...];[[taille;nb];[taille;nb]; ...];epaisseurLame;ODC-END"`
-
-Avec :
-* ODC-START : l'annonce du début du message
-* ODC-END : l'annonce de la fin du message
-* taille  : la taille en mm de la barre ou du tronçon
-* nb : le nombre de barres ou de barres de cette taille
-* epaisseurLame : l'épaisseur de la lame en mm
+`"ODC-START!taille;nb|taille;nb|etc!taille;nb|taille;nb|etc!epaisseurLame!ODC-END"`
 
 ## Envoi des résultats
 
-`"ODC-START;[[barre;[tronçon;tronçon; ...];rendement];[barre;[tronçon;tronçon; ...];rendement] ...];rendementTotal;[tronRest;tronRest; ...];[barreRest;barreRest; ...];ODC-END"`
+`"ODC-START!barre/tronçon;tronçon;...|barre/tronçon;tronçon;...|barre/tronçon;tronçon;...!rendementTotal!barreRest;barreRest;...!tronRest;tronRest;...!ODC-END"`
 
 ## Fonctions de Qt à utiliser
 * `QStringList QString::split(const QString & sep;SplitBehavior behavior = KeepEmptyParts;Qt::CaseSensitivity cs = Qt::CaseSensitive) const` : permet de découper un string en une liste de string
