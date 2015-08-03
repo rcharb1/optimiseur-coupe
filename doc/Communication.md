@@ -1,4 +1,4 @@
-Optimiseur de coupe - Protocole pour le réseau
+Optimiseur de coupe - Protocole ODC pour le réseau
 ===
 
 Toutes les valeurs sont en mm.
@@ -25,7 +25,11 @@ Sans avoir vérifier ces trois conditions (5 éléments, présence de ODC-START,
 
 `"ODC-START!barre/tronçon;tronçon;.../rendement|barre/tronçon;tronçon;.../rendement|barre/tronçon;tronçon;.../rendement!rendementTotal!barreRest;barreRest;...!tronRest;tronRest;...!ODC-END"`
 
-Le client doit vérifier que la QStringList renvoyée par `message.split('!')` contient bien 6 éléments, qui sont:
+Si les calculs demandés sont trop grands, il faut envoyer ce message :
+
+`ODC-START!STOP-CALCULS!ODC-END`
+
+Sauf en cas de calculs trop grands, le client doit vérifier que la QStringList renvoyée par `message.split('!')` contient bien 6 éléments, qui sont:
 1. ODC-START
 2. Les combinaisons
 3. Le rendement total
