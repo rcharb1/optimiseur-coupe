@@ -15,6 +15,11 @@
 #include "widgetresultats.h"
 #include "./graphique/wigetgraphique.h"
 #include "ongletinfo.h"
+#include <QTcpSocket>
+#include <QString>
+#include <QInputDialog>
+#include <QMessageBox>
+#include "reseau/protocoleodc_client.h"
 
 /*
  * \class FenetrePrincipale fenetreprincipale.h
@@ -30,6 +35,10 @@ public:
     // \brief Constructeur de la classe FenetrePrincipale
     explicit FenetrePrincipale(QWidget *parent = 0);
 
+    // \brief Créé la représentation d'une liste de barres ou de tronçons
+    // \return La chaîne de caractère à aficher
+    QString listToStr(QVector<double> liste);
+
 signals:
 
 private:
@@ -37,6 +46,9 @@ private:
     FormulaireSaisie * m_formulaireSaisie;
     WidgetResultats * m_widgetResultats;
     WidgetGraphique * m_widgetGraphique;
+    QTcpSocket * m_socket;
+    QString m_ip;
+    int m_port;
 public slots:
     /*
      * \brief Slot traitant le formulaire

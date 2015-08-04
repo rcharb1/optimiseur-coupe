@@ -15,12 +15,12 @@
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QVector>
-#include <list>
 #include <QScrollArea>
 #include <QDesktopServices>
 #include <QDir>
 #include <QUrl>
 #include "barregraphique.h"
+#include "../reseau/combinaison.h"
 
 // \class WidgetGraphique widgetgraphique.h
 // \brief Classe chargée d'afficher le résultat sour forme graphique
@@ -33,8 +33,8 @@ public:
     explicit WidgetGraphique(QFont & fontTitre ,QWidget *parent = 0);
 
     // \brief Créé ou met à jour le graphique
-    // \param combinaison La combinaison des tronçons désirés
-    void updateGraphique(std::list<Combinaison> *combinaison);
+    // \param resultats La combinaison des tronçons désirés
+    void updateGraphique(QVector<Combinaison *> resultats);
 private:
     QVBoxLayout * m_layoutBarres;
     QLabel * m_labelNoResults;

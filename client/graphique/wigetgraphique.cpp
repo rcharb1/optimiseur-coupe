@@ -60,14 +60,15 @@ void WidgetGraphique::afficheAide(){
     QDesktopServices::openUrl(QUrl::fromLocalFile(QDir::currentPath() + tr("/help/index.fr.html")));
 }
 
-void WidgetGraphique::updateGraphique(std::list<Combinaison> * combinaison)
+void WidgetGraphique::updateGraphique(QVector<Combinaison *> resultats)
 {
+    int i;
+
     // Vide le widget des barres
     if(m_vectorBarres.size()==0){
         m_labelNoResults->setText("");
     }
     else{
-        int i;
         for(i=0; i < m_vectorBarres.size(); i++){
             m_layoutBarres->removeWidget(m_vectorBarres[i]);
             delete m_vectorBarres[i];
@@ -75,11 +76,9 @@ void WidgetGraphique::updateGraphique(std::list<Combinaison> * combinaison)
         m_vectorBarres.resize(0);
     }
 
-    for(std::list<Combinaison>::iterator it=combinaison->begin();
-        it != combinaison->end();
-        ++it){
+    for(i = 0; i < resultats.length(); i++){
         m_vectorBarres.resize(m_vectorBarres.size()+1);
-        m_vectorBarres.last() = new BarreGraphique(&(*it));
+        m_vectorBarres.last() = new BarreGraphique(resultats[i]);
         m_layoutBarres->addWidget(m_vectorBarres.last(), 0, Qt::AlignTop);
     }
 }

@@ -9,6 +9,8 @@
 #define COMBINAISON_H
 
 #include <QVector>
+#include <QObject>
+#include "../convertunit.h"
 
 
 /*
@@ -48,6 +50,13 @@ public:
      * \return Le rendement
      */
     double rendement() const;
+
+    /*
+     * \brief Créé la représentation de la combinaison
+     * \return Le QString représentant la combinaison à afficher
+     */
+    QString toStr() const;
+
 private:
     double m_barre;
     QVector<double> m_troncons;

@@ -9,7 +9,7 @@
         <translation>On a bar of </translation>
     </message>
     <message>
-        <location filename="graphique/barregraphique.cpp" line="84"/>
+        <location filename="graphique/barregraphique.cpp" line="81"/>
         <source>
 restants</source>
         <translation>\nremaining</translation>
@@ -18,81 +18,157 @@ restants</source>
 <context>
     <name>FenetrePrincipale</name>
     <message>
-        <location filename="fenetreprincipale.cpp" line="13"/>
+        <location filename="fenetreprincipale.cpp" line="17"/>
+        <source>Saisie de l&apos;adresse IP</source>
+        <translation>Entry of IP adress</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="18"/>
+        <source>Adresse IP</source>
+        <translation>IP adress</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="22"/>
+        <source>Saisie du port</source>
+        <translation>Entry of port</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="23"/>
+        <source>Port</source>
+        <translation>Port</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="40"/>
+        <source>Erreur : le serveur n&apos;a pas pu être trouvé.</source>
+        <translation>Error : the server cannot be found.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="41"/>
+        <source>Vérifiez l&apos;adresse IP et le port.</source>
+        <translation>Please check the IP adress and the port.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="44"/>
+        <source>Erreur : le serveur a refusé la connexion.</source>
+        <translation>Error : the server disallow the connection.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="45"/>
+        <source>Vérifiez si le serveur a bien été lancé. Vérifiez aussi l&apos;adresse IP et le port.</source>
+        <oldsource>Vérifiez si le serveur a bien été lancé. Vérifiez aussi l&apos;IP et le port.</oldsource>
+        <translation>Please check if the server is on. Check also the IP adress and the port.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="48"/>
+        <source>Erreur : le serveur a coupé la connexion.</source>
+        <oldsource>rreur : le serveur a coupé la connexion.</oldsource>
+        <translation>Error : the server stopped the connection.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="49"/>
+        <source>Veuillez réessayer plus tard.</source>
+        <translation>Please, try later.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="52"/>
+        <source>Erreur : </source>
+        <translation>Error: </translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="57"/>
+        <source>Erreur - Connexion au serveur</source>
+        <translation>Error - Connection to the server</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="68"/>
         <source>Optimiseur de coupe</source>
         <translation>Cutting Optimizer</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="25"/>
+        <location filename="fenetreprincipale.cpp" line="80"/>
         <source>Formulaire de saisie</source>
         <translation>Entry Form</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="29"/>
+        <location filename="fenetreprincipale.cpp" line="84"/>
         <source>Résultats</source>
         <translation>Results</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="33"/>
+        <location filename="fenetreprincipale.cpp" line="88"/>
         <source>Graphique des résultats</source>
         <translation>Graphic results</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="37"/>
+        <location filename="fenetreprincipale.cpp" line="92"/>
         <source>A propos</source>
         <translation>About</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="66"/>
-        <location filename="fenetreprincipale.cpp" line="79"/>
-        <location filename="fenetreprincipale.cpp" line="105"/>
+        <location filename="fenetreprincipale.cpp" line="133"/>
+        <location filename="fenetreprincipale.cpp" line="146"/>
+        <location filename="fenetreprincipale.cpp" line="180"/>
         <source>Erreur</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="67"/>
+        <location filename="fenetreprincipale.cpp" line="134"/>
         <source>La longueur totale des barres avant la découpe est plus petite que la longueur totale des tronçons demandés.</source>
         <translation>The total length of the bars before the cutting is smaller than the total length of segments requested.</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="80"/>
+        <location filename="fenetreprincipale.cpp" line="147"/>
         <source>L&apos;épaisseur de la lame est plus grande que la plus petite longueur des barres avant la découpe.</source>
         <translation>The thickness of the blade is larger than the smallest length of the bars before cutting.</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="95"/>
+        <location filename="fenetreprincipale.cpp" line="159"/>
+        <source>Erreur - Envoi du formulaire</source>
+        <translation>Error - Sending of the form</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="160"/>
+        <source>Une erreur est apparu lors de l&apos;envoi du formulaire au serveur. </source>
+        <translation>An error occured during the sending of the form to the server.</translation>
+    </message>
+    <message>
+        <location filename="fenetreprincipale.cpp" line="171"/>
         <source>Calculs arrétés</source>
         <translation>Calculations stopped</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="95"/>
+        <location filename="fenetreprincipale.cpp" line="171"/>
         <source>Les calculs demandés sont trop grands. Aucun résultat ne sera affiché.</source>
         <translation>Required calculations are too large. No results will be displayed.</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="102"/>
+        <location filename="fenetreprincipale.cpp" line="177"/>
         <source>Vous n&apos;avez pas assez de matière première pour couper tous les tronçons désirés.&lt;br&gt;Liste des troncons restants:&lt;br&gt;</source>
         <translation>You do not have enough raw material to cut all desired sections &lt;br&gt;List of remaining sections:&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="112"/>
+        <location filename="fenetreprincipale.cpp" line="186"/>
         <source>Il vous reste une/des barre(s) entière(s) non utilisée(s) :&lt;br&gt;Liste de la/des barre(s) restante(s) :&lt;br&gt;</source>
         <translation>You have one or more whole(s) bar(s) not used:&lt;br&gt;List of the remaining bars:&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="117"/>
+        <location filename="fenetreprincipale.cpp" line="191"/>
         <source>Vous n&apos;avez pas eu assez de matière première pour couper tous les tronçons que vous désiriez.&lt;br&gt;Liste de troncons restants:&lt;br&gt;</source>
         <translation>You do not have enough raw material to cut all desired sections &lt;br&gt;List of remaining sections:&lt;br&gt;</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="123"/>
+        <location filename="fenetreprincipale.cpp" line="197"/>
         <source>&lt;br&gt;Voici la liste des coupes que vous devez effectuer :&lt;ul&gt;</source>
         <translation>&lt;br&gt;Here is the list of cuts that you should perform:&lt;ul&gt;</translation>
     </message>
     <message>
-        <location filename="fenetreprincipale.cpp" line="130"/>
+        <location filename="fenetreprincipale.cpp" line="203"/>
+        <source>Vous avez un rendement moyen de </source>
+        <translation>The average yield is </translation>
+    </message>
+    <message>
         <source>&lt;/ul&gt;Vous avez un rendement moyen de </source>
-        <translation>&lt;/ul&gt;You have an average yield of </translation>
+        <translation type="vanished">&lt;/ul&gt;You have an average yield of </translation>
     </message>
 </context>
 <context>
@@ -192,12 +268,12 @@ restants</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="moteur/Combinaison.cpp" line="37"/>
+        <location filename="reseau/combinaison.cpp" line="32"/>
         <source>&lt;li&gt;Sur une barre de </source>
         <translation>&lt;li&gt;On a bar of </translation>
     </message>
     <message>
-        <location filename="moteur/Combinaison.cpp" line="45"/>
+        <location filename="reseau/combinaison.cpp" line="39"/>
         <source>Le rendement est de </source>
         <translation>The yield is </translation>
     </message>
