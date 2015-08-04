@@ -10,11 +10,11 @@
 
 #include <QWidget>
 #include <QPainter>
-#include <list>
 #include <QString>
 #include <QVector>
 #include <QMessageBox>
 #include "../convertunit.h"
+#include "../reseau/combinaison.h"
 
 // \class BarreGraphique barregraphique.h
 // \brief Classe chargée de la création d'un graphique représentant un tronçon
@@ -28,7 +28,7 @@ public:
 
 private:
     Combinaison * m_combinaison;
-    std::list<Paire> m_liste;
+    QVector<double> m_liste;
     double m_barre;
 signals:
 

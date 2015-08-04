@@ -16,8 +16,8 @@ BarreGraphique::BarreGraphique(Combinaison * combinaison, QWidget *parent) :QWid
      */
     setMinimumHeight(65);
     setMinimumWidth(500);
-    m_liste = m_combinaison->getPaires();
-    m_barre = m_combinaison->getBarre();
+    m_liste = m_combinaison->troncons();
+    m_barre = m_combinaison->barre();
 }
 
 
@@ -30,23 +30,20 @@ void BarreGraphique::paintEvent(QPaintEvent *e)
     painter.drawText(QPoint(0,10), tr("Sur une barre de ") + ConvertUnit::toStrSimplifie(m_barre) + " :");
 
     // Calcul le nb de pixels dispos
-    int longueur = 0, i, typeAffichage;
+    int longueur = 0, i,j, typeAffichage;
     double longueurUtilisee = 0;
-    std::list<Paire>::iterator it;
-    for (it = m_liste.begin(); it != m_liste.end(); it++)
-        longueur++;
+    longueur = m_liste.length();
     longueur = 500 - ((longueur-1)*5); // 5 px d'espace entre les carrés
 
     // Calcul la longueur réellement utilisée
-    for (it = m_liste.begin(); it != m_liste.end(); it++)
-        longueurUtilisee += it->getLongueur();
+    for (i = 0; i < m_liste.length() ; i++)
+        longueurUtilisee += m_liste[i];
 
     // Calcul la façon dont sera affiché le graphique
     // 1 : on essaye d'afficher les restes
     // 0 : on affiche juste les coupes à faire sans prendre en compte les restes
     // Ceci permet d'éviter les cas ou la découpe est trop petite pour afficher le label longueur
-    it = m_liste.begin();
-    if((longueur * (int) it->getLongueur() / m_barre) < 45){
+    if((longueur * (int) m_liste[0] / m_barre) < 45){
         typeAffichage = 0;
     }
     else
@@ -59,16 +56,16 @@ void BarreGraphique::paintEvent(QPaintEvent *e)
     QRect rec;
 
     // Affichage des rectangles
-    for (it = m_liste.begin(); it != m_liste.end(); it++){
+    for (j = 0; j < m_liste.length(); j++){
         if(typeAffichage == 1)
-            i = (longueur * (int) it->getLongueur()) / m_barre;
+            i = (longueur * (int) m_liste[j]) / m_barre;
         else
-            i = (longueur * (int) it->getLongueur()) / (int) longueurUtilisee;
+            i = (longueur * (int) m_liste[j]) / (int) longueurUtilisee;
         b.setX(a.x() + i);
         rec.setTopLeft(a);
         rec.setBottomRight(b);
         painter.drawRect(rec);
-        painter.drawText(rec, Qt::AlignCenter, it->toStr());
+        painter.drawText(rec, Qt::AlignCenter, ConvertUnit::toStrSimplifie(m_liste[j]));
         a.setX(b.x() + 5);
     }
 

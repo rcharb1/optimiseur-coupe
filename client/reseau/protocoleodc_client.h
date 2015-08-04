@@ -67,11 +67,18 @@ public:
      */
     QVector<double> barresRestantes() const;
 
+    /*
+     * \brief Méthode d'accès à l'état
+     * \return 0 en cas d'erreur, 1 calculs trop grands, 2 réussi
+     */
+    int etat() const;
+
 private:
     QVector<Combinaison *> m_listResultats;
     double m_rendementTotal;
     QVector<double> m_troncRestants;
     QVector<double> m_barresRestantes;
+    int m_etat;
 };
 
 #endif // PROTOCOLEODC_CLIENT_H

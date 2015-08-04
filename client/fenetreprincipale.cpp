@@ -9,6 +9,64 @@
 
 FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
 {
+    bool ok, continueBoucle=true;
+
+    // la boucle permet de proposer plusieurs fois de rentrer l'adresse IP et le port en cas d'erreur
+    while (continueBoucle){
+        // récupère l'IP
+        m_ip = QInputDialog::getText(this, tr("Saisie de l'adresse IP"),
+                                              tr("Adresse IP"), QLineEdit::Normal,
+                                              "", &ok );
+        if (ok){
+            if(!m_ip.isEmpty()) {
+                // récupère le port
+                m_port = QInputDialog::getInt(this, tr("Saisie du port"),
+                                          tr("Port"), 0, 1024, 65536, 1, &ok );
+                if (!ok){
+                    qApp->quit();
+                }
+            }
+            else
+                continue;
+        }
+        else
+            qApp->quit();
+
+        // connexion au serveur
+        m_socket = new QTcpSocket(this);
+        m_socket->connectToHost(m_ip, m_port);
+        if(! m_socket->waitForConnected()) {
+            // Affichage du message d'errur
+            QMessageBox erreurMessageBox;
+            switch (m_socket->error()) {
+                case QAbstractSocket::HostNotFoundError:
+                    erreurMessageBox.setText(tr("Erreur : le serveur n'a pas pu être trouvé."));
+                    erreurMessageBox.setInformativeText(tr("Vérifiez l'adresse IP et le port."));
+                break;
+            case QAbstractSocket::ConnectionRefusedError:
+                erreurMessageBox.setText(tr("Erreur : le serveur a refusé la connexion."));
+                erreurMessageBox.setInformativeText(tr("Vérifiez si le serveur a bien été lancé. Vérifiez aussi l'adresse IP et le port."));
+                break;
+            case QAbstractSocket::RemoteHostClosedError:
+                erreurMessageBox.setText(tr("Erreur : le serveur a coupé la connexion."));
+                erreurMessageBox.setInformativeText(tr("Veuillez réessayer plus tard."));
+                break;
+            default:
+                erreurMessageBox.setText(tr("Erreur : ") + m_socket->errorString());
+                break;
+            }
+
+            erreurMessageBox.setIcon(QMessageBox::Critical);
+            erreurMessageBox.setWindowTitle(tr("Erreur - Connexion au serveur"));
+            erreurMessageBox.setStandardButtons(QMessageBox::Close | QMessageBox::Retry);
+            if (erreurMessageBox.exec() == QMessageBox::Close) {
+                qApp->quit();
+            }
+         }
+         else
+             continueBoucle = false;
+    }
+
     // Titre de la fenêtre
     setWindowTitle(tr("Optimiseur de coupe"));
     setWindowIcon(QIcon("mainIcon.ico"));
@@ -43,6 +101,18 @@ FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
     // Connexions
     QObject::connect(m_formulaireSaisie->buttonAppliquer(), SIGNAL(clicked()),
                      this, SLOT(traiterFormulaire()) );
+}
+
+QString FenetrePrincipale::listToStr(QVector<double> liste)
+{
+    int i;
+    QString text("");
+    for(i=0; i< liste.length(); text+=", ") {
+        text += ConvertUnit::toStrSimplifie(liste[i]);
+        i++;
+    }
+    text += "<br>";
+    return text;
 }
 
 void FenetrePrincipale::traiterFormulaire(){
@@ -85,54 +155,72 @@ void FenetrePrincipale::traiterFormulaire(){
     // Pas d'erreur détectée : lancement du moteur
     if(erreur==0){
         QString text("");
-        List * tronconsList = new List();
-        List * barresList =  new List();
-        createSortedList(tronconsList, resultatsTron);
-        createSortedList(barresList, resultatsBarres);
-        MoteurCalculs * moteur = new MoteurCalculs(tronconsList, barresList, m_formulaireSaisie->epaisseurLame());
 
-        if(moteur->pilote() == -1){
-            QMessageBox::warning(this, tr("Calculs arrétés"), tr("Les calculs demandés sont trop grands. Aucun résultat ne sera affiché."));
-            //return;
+        // Envoi du message au serveur
+        QString message = ProtocoleODC_client::createMessage(resultatsBarres, resultatsTron,m_formulaireSaisie->epaisseurLame());
+        if(m_socket->write(qPrintable(message)) == -1) {
+            QMessageBox::warning(this, tr("Erreur - Envoi du formulaire"),
+                                 tr("Une erreur est apparu lors de l'envoi du formulaire au serveur. "));
+            return;
         }
 
-        List * listFinaletroncons = moteur->getTroncons();
-        if(not listFinaletroncons->empty()){
+        // Réception des résultats
+        forever{
+            if(m_socket->canReadLine())
+                break;
+        }
+        ProtocoleODC_client * protODC = new ProtocoleODC_client(m_socket->readLine());
+        if(protODC->etat() == 1){
+            QMessageBox::warning(this, tr("Calculs arrétés"), tr("Les calculs demandés sont trop grands."
+                                                                 "Aucun résultat ne sera affiché."));
+            return;
+        }
+        else if(protODC->etat() != 2) {
+            QMessageBox erreurMsgB;
+            erreurMsgB.setText(tr("Une erreur s'est produite lors du traitement de la réponse du serveur."
+                                  "Aucun résultat ne sera affiché."));
+            erreurMsgB.setWindowTitle(tr("Erreur - Traitement de la réponse du serveur"));
+            erreurMsgB.setStandardButtons(QMessageBox::Ok);
+            erreurMsgB.setDetailedText(message);
+            erreurMsgB.setIcon(QMessageBox::Critical);
+            erreurMsgB.exec();
+            return;
+        }
+
+        if(not protODC->tronconsRestants().empty()){
             erreur=10;
             text = tr("Vous n'avez pas assez de matière première pour "
                               "couper tous les tronçons désirés.<br>Liste des troncons restants:<br>");
-            text += listFinaletroncons->toStr(true);
+            text += listToStr(protODC->tronconsRestants());
             QMessageBox::warning(this, tr("Erreur"), text);
         }
 
         text="";
 
-        List * listFinaleBarres = moteur->getBarres();
-        if(not listFinaleBarres->empty()){
+        if(not protODC->tronconsRestants().empty()){
             text = tr("Il vous reste une/des barre(s) entière(s) non utilisée(s) :<br>Liste de la/des barre(s) restante(s) :<br>");
-            text += listFinaleBarres->toStr(true) + "<hr>";
+            text += listToStr(protODC->tronconsRestants()) + "<hr>";
         }
 
         if(erreur==10){
             text += tr("Vous n'avez pas eu assez de matière première pour "
                               "couper tous les tronçons que vous désiriez.<br>Liste de troncons restants:<br>");
-            text += listFinaletroncons->toStr(true) + "<hr>";
+            text += listToStr(protODC->tronconsRestants()) + "<hr>";
         }
 
         // Liste des coupes
         text += tr("<br>Voici la liste des coupes que vous devez effectuer :<ul>");
-        list<Combinaison> * listResultats = moteur->getPointResultatFinal();
-        for(list<Combinaison>::iterator it=listResultats->begin();
-            it != listResultats->end();
-            ++it){
-            text+=it->toStr();
+        int i;
+        for(i = 0; i < protODC->resultats().length(); i++) {
+            text += protODC->resultats()[i]->toStr();
         }
-        text += tr("</ul>Vous avez un rendement moyen de ") + QString::number(moteur->calculeRendementFinal(),'g', 4) + "%.";
+
+        text += "</ul>" + tr("Vous avez un rendement moyen de ");
+        text += QString::number(protODC->rendementTotal(),'g', 4) + "%.";
+
         m_widgetResultats->updateResultats(text);
-        m_widgetGraphique->updateGraphique(listResultats);
+        m_widgetGraphique->updateGraphique(protODC->resultats());
         m_tabs->setCurrentIndex(1);
-        delete tronconsList;
-        delete barresList;
-        delete moteur;
+        delete protODC;
     }
 }
