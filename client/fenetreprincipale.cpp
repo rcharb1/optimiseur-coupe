@@ -21,7 +21,7 @@ FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
             if(!m_ip.isEmpty()) {
                 // récupère le port
                 m_port = QInputDialog::getInt(this, tr("Saisie du port"),
-                                          tr("Port"), 0, 1024, 65536, 1, &ok );
+                                          tr("Port"), 1050, 1024, 65536, 1, &ok );
                 if (!ok){
                     qApp->quit();   // quitte l'application si 'Cancel' a été cliqué
                 }
