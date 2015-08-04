@@ -9,14 +9,14 @@
 
 ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0)
 {
-    if(QString::compare(message, "ODC-START!STOP-CALCULS!ODC-END") == 0) {
+    if(QString::compare(message, "ODC-START!STOP-CALCULS!ODC-END\n") == 0) {
         m_etat = 1;
     }
     else {
         QStringList messageList = message.split("!");
         if(messageList.size() == 6) {
             int testA = QString::compare(messageList[0], "ODC-START");
-            int testB = QString::compare(messageList[5], "ODC-END");
+            int testB = QString::compare(messageList[5], "ODC-END\n");
             if(testA == 0 && testB == 0) {
                 // Le message commence bien par ODC-START et ODC-END et contient bien 5 éléments
                 // On peut le traiter
@@ -79,7 +79,7 @@ ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0)
                 m_etat = 2;
             }
             else
-                qDebug() << "Le message ne commence pas par ODC-START ou ODC-END : [" << messageList.join("][") << "]";
+                qDebug() << "Le message ne commence pas par ODC-START ou ODC-END\\n : [" << messageList.join("][") << "]";
         }
         else
             qDebug() << "Le message ne contient pas 6 éléments : [" << messageList.join("][") << "]";
@@ -118,7 +118,7 @@ QString ProtocoleODC_client::createMessage(QVector<Saisie *> resultatsBarres, QV
     message += QString::number(epaisseurLame);
 
     // ODC-END indique la fin du message
-    message +="!ODC-END";
+    message +="!ODC-END\n";
 
     return message;
 }
