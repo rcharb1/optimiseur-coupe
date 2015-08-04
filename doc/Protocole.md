@@ -17,11 +17,11 @@ Le serveur doit vérifier que la QStringList renvoyée par `message.split('!')` 
 2. Les barres avant la découpe
 3. Les tronçons désirés
 4. L'épaisseur de la lame
-5. ODC-END.
+5. ODC-END\n.
 
-De plus, le serveur doit vérifier que le premier élément est `ODC-START` et le dernier `ODC-END`.
+De plus, le serveur doit vérifier que le premier élément est `ODC-START` et le dernier `ODC-END\n`.
 
-Sans avoir vérifier ces trois conditions (5 éléments, présence de ODC-START, présence de ODC-END), le serveur ne doit pas traiter le message.
+Sans avoir vérifier ces trois conditions (5 éléments, présence de ODC-START, présence de ODC-END\n), le serveur ne doit pas traiter le message.
 
 ## Envoi des résultats
 
@@ -37,11 +37,11 @@ Sauf en cas de calculs trop grands, le client doit vérifier que la QStringList 
 3. Le rendement total
 4. Les barres restantes
 5. Les tronçons restants
-6. ODC-END.
+6. ODC-END\n.
 
-De plus, le client doit vérifier que le premier élément est `ODC-START` et le dernier `ODC-END`.
+De plus, le client doit vérifier que le premier élément est `ODC-START` et le dernier `ODC-END\n`.
 
-Sans avoir vérifier ces trois conditions (6 éléments, présence de ODC-START, présence de ODC-END), le client ne doit pas traiter le message.
+Sans avoir vérifier ces trois conditions (6 éléments, présence de ODC-START, présence de ODC-END\n), le client ne doit pas traiter le message.
 
 ## Fonctions de Qt à utiliser
 * `QStringList QString::split()` : permet de découper un string en une liste de string
