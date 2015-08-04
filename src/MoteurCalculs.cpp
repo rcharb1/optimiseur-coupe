@@ -203,7 +203,6 @@ list<Combinaison> MoteurCalculs:: getResultatFinal () const
 	return m_resultatFinal;
 }
 
-
 /*===================affichage=====================*/
 
 #if DEBUG
