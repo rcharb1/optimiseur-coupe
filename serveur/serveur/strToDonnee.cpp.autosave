@@ -1,0 +1,12 @@
+# include <QApplication>
+# include "List.h"
+# include "Combinaison.h"
+# include "MoteurCalculs.h"
+
+Qstring denneeToStr () {
+
+}
+int main ()
+{
+    return 0;
+}
