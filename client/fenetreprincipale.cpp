@@ -12,22 +12,25 @@ FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
     bool ok, continueBoucle=true;
 
     // la boucle permet de proposer plusieurs fois de rentrer l'adresse IP et le port en cas d'erreur
-    while(continueBoucle){
+    while (continueBoucle){
         // récupère l'IP
         m_ip = QInputDialog::getText(this, tr("Saisie de l'adresse IP"),
                                               tr("Adresse IP"), QLineEdit::Normal,
                                               "", &ok );
-        if (ok && !m_ip.isEmpty()){
-            // récupère le port
-            m_port = QInputDialog::getInt(this, tr("Saisie du port"),
-                                      tr("Port"), 0, 1024, 65536, 1, &ok );
-            if (!ok && m_port==-1){
-                qApp->quit();
+        if (ok){
+            if(!m_ip.isEmpty()) {
+                // récupère le port
+                m_port = QInputDialog::getInt(this, tr("Saisie du port"),
+                                          tr("Port"), 0, 1024, 65536, 1, &ok );
+                if (!ok){
+                    qApp->quit();
+                }
             }
-         }
-         else{
-             qApp->quit();
-         }
+            else
+                continue;
+        }
+        else
+            qApp->quit();
 
         // connexion au serveur
         m_socket = new QTcpSocket(this);
@@ -168,7 +171,19 @@ void FenetrePrincipale::traiterFormulaire(){
         }
         ProtocoleODC_client * protODC = new ProtocoleODC_client(m_socket->readLine());
         if(protODC->etat() == 1){
-            QMessageBox::warning(this, tr("Calculs arrétés"), tr("Les calculs demandés sont trop grands. Aucun résultat ne sera affiché."));
+            QMessageBox::warning(this, tr("Calculs arrétés"), tr("Les calculs demandés sont trop grands."
+                                                                 "Aucun résultat ne sera affiché."));
+            return;
+        }
+        else if(protODC->etat() != 2) {
+            QMessageBox erreurMsgB;
+            erreurMsgB.setText(tr("Une erreur s'est produite lors du traitement de la réponse du serveur."
+                                  "Aucun résultat ne sera affiché."));
+            erreurMsgB.setWindowTitle(tr("Erreur - Traitement de la réponse du serveur"));
+            erreurMsgB.setStandardButtons(QMessageBox::Ok);
+            erreurMsgB.setDetailedText(message);
+            erreurMsgB.setIcon(QMessageBox::Critical);
+            erreurMsgB.exec();
             return;
         }
 
