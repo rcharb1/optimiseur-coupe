@@ -13,7 +13,7 @@ FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
 
     // la boucle permet de proposer plusieurs fois de rentrer l'adresse IP et le port en cas d'erreur
     while (continueBoucle){
-        // récupère l'IP
+        // demande l'IP
         m_ip = QInputDialog::getText(this, tr("Saisie de l'adresse IP"),
                                               tr("Adresse IP"), QLineEdit::Normal,
                                               "", &ok );
@@ -23,18 +23,22 @@ FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
                 m_port = QInputDialog::getInt(this, tr("Saisie du port"),
                                           tr("Port"), 0, 1024, 65536, 1, &ok );
                 if (!ok){
-                    qApp->quit();
+                    qApp->quit();   // quitte l'application si 'Cancel' a été cliqué
                 }
             }
             else
-                continue;
+                continue;   // redemande l'IP si celle-ci est toujours vide
         }
         else
-            qApp->quit();
+            qApp->quit();   // quitte l'application si 'Cancel' a été cliqué
 
         // connexion au serveur
         m_socket = new QTcpSocket(this);
+
+        //connexion
         m_socket->connectToHost(m_ip, m_port);
+
+        // attend la connextion
         if(! m_socket->waitForConnected()) {
             // Affichage du message d'errur
             QMessageBox erreurMessageBox;
@@ -64,7 +68,7 @@ FenetrePrincipale::FenetrePrincipale(QWidget *parent) : QWidget(parent)
             }
          }
          else
-             continueBoucle = false;
+             continueBoucle = false;    // passe à la suite
     }
 
     // Titre de la fenêtre
