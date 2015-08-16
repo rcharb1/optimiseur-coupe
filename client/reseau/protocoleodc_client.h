@@ -11,9 +11,7 @@
 #include <QString>
 #include <QVector>
 #include "saisies/saisie.h"
-#include "convertunit.h"
 #include "combinaison.h"
-#include <QDebug>
 
 /*
  * \class ProtocoleODC_client ProtocoleODC_client.h
@@ -73,12 +71,15 @@ public:
      */
     int etat() const;
 
+    QString erreur() const;
+
 private:
     QVector<Combinaison *> m_listResultats;
     double m_rendementTotal;
     QVector<double> m_troncRestants;
     QVector<double> m_barresRestantes;
     int m_etat;
+    QString m_erreur;
 };
 
 #endif // PROTOCOLEODC_CLIENT_H

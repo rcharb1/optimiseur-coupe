@@ -7,7 +7,7 @@
 
 #include "protocoleodc_client.h"
 
-ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0)
+ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0), m_erreur("")
 {
     if(QString::compare(message, "ODC-START!STOP-CALCULS!ODC-END\n") == 0) {
         m_etat = 1;
@@ -25,6 +25,7 @@ ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0)
                 // Vérifie qu'il y ait au moins 1 tronçon
                 if(QString::compare(combinaisonsList[0], messageList[1]) != 0 ||
                         QString::compare(messageList[1], "") != 0 ) {
+
 
                     // Il y a des combinaisons disponibles
                     int i,j;
@@ -50,10 +51,10 @@ ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0)
                                 m_listResultats.append(combinaison);
                             }
                             else
-                                qDebug() << "Il n'y a pas de tronçons dans la combinaison : " << combinaisonsList[i];
+                                m_erreur = "Il n'y a pas de tronçons dans la combinaison : " + combinaisonsList[i];
                         }
                         else
-                            qDebug() << "La combinaison n'est pas composée de 3 éléments : " << combinaisonsList[i];
+                            m_erreur = "La combinaison n'est pas composée de 3 éléments : " + combinaisonsList[i];
                     }
                 }
 
@@ -78,11 +79,15 @@ ProtocoleODC_client::ProtocoleODC_client(QString message) : m_etat(0)
 
                 m_etat = 2;
             }
-            else
-                qDebug() << "Le message ne commence pas par ODC-START ou ODC-END\\n : [" << messageList.join("][") << "]";
+            else{
+                m_etat = 0;
+                m_erreur += "Le message ne commence pas par ODC-START ou ODC-END\\n : [" + messageList.join("][") + "]";
+            }
         }
-        else
-            qDebug() << "Le message ne contient pas 6 éléments : [" << messageList.join("][") << "]";
+        else{
+            m_etat = 0;
+            m_erreur += "Le message ne contient pas 6 éléments : [" + messageList.join("][") + "]";
+        }
     }
 }
 
@@ -94,24 +99,23 @@ QString ProtocoleODC_client::createMessage(QVector<Saisie *> resultatsBarres, QV
     int i;
 
     // Ajout des barres avant la découpe
-    for(i=0; i< resultatsBarres.length() ; message += "|") {
-
-        QString saisie(QString::number(ConvertUnit::toMm(resultatsBarres[i]->longueur(), resultatsBarres[i]->unite())));
+    for(i=0; i< resultatsBarres.length() ; i++) {
+        QString saisie(QString::number(resultatsBarres[i]->longueur()));
         saisie += ";";
         saisie += QString::number(resultatsBarres[i]->quantite());
-        i++;
-        message += saisie;
+        message += saisie + "|";
     }
+    message.remove(message.length()-1, 1); // retire dernier |
     message += "!";
 
     // Ajout des tronçons désirés
-    for(i=0; i< resultatsTron.length() ; message += "|") {
-        QString saisie(QString::number(ConvertUnit::toMm(resultatsTron[i]->longueur(), resultatsTron[i]->unite())));
+    for(i=0; i< resultatsTron.length() ; i++) {
+        QString saisie(QString::number(resultatsTron[i]->longueur()));
         saisie += ";";
         saisie += QString::number(resultatsTron[i]->quantite());
-        i++;
-        message += saisie;
+        message += saisie + "|";
     }
+    message.remove(message.length()-1, 1); // retire dernier |
     message += "!";
 
     // Ajout de l'épaisseur de la lame
@@ -146,4 +150,9 @@ QVector<double> ProtocoleODC_client::barresRestantes() const
 int ProtocoleODC_client::etat() const
 {
     return m_etat;
+}
+
+QString ProtocoleODC_client::erreur() const
+{
+    return m_erreur;
 }

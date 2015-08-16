@@ -17,9 +17,9 @@
 #include "ongletinfo.h"
 #include <QTcpSocket>
 #include <QString>
-#include <QInputDialog>
 #include <QMessageBox>
 #include "reseau/protocoleodc_client.h"
+#include "reseau/client.h"
 
 /*
  * \class FenetrePrincipale fenetreprincipale.h
@@ -47,8 +47,7 @@ private:
     WidgetResultats * m_widgetResultats;
     WidgetGraphique * m_widgetGraphique;
     QTcpSocket * m_socket;
-    QString m_ip;
-    int m_port;
+    Client * m_client;
 public slots:
     /*
      * \brief Slot traitant le formulaire
@@ -58,6 +57,17 @@ public slots:
      * pour la génération du graphique
      */
     void traiterFormulaire();
+
+private slots:
+    /*
+     * \brief Signal lorsque le client est bien connecté au serveur
+     */
+    void bienConnecte();
+
+    /*
+     * \brief Signal lorsque le serveur s'est déconnecté.
+     */
+    void deconnexion();
 };
 
 #endif // FENETREPRINCIPALE_H

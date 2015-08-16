@@ -10,7 +10,9 @@ HEADERS += \
     graphique/wigetgraphique.h \
     ongletinfo.h \
     reseau/protocoleodc_client.h \
-    reseau/combinaison.h
+    reseau/combinaison.h \
+    reseau/client.h \
+    reseau/demandeipport.h
 
 SOURCES += \
     saisies/groupesaisie.cpp \
@@ -24,7 +26,9 @@ SOURCES += \
     graphique/wigetgraphique.cpp \
     ongletinfo.cpp \
     reseau/protocoleodc_client.cpp \
-    reseau/combinaison.cpp
+    reseau/combinaison.cpp \
+    reseau/client.cpp \
+    reseau/demandeipport.cpp
 
 QT += widgets
 QT += core
