@@ -16,7 +16,7 @@ DemandeIpPort::DemandeIpPort(QWidget *parent) : QWidget(parent)
     // Label
     QLabel * message = new QLabel(tr("Veuillez rentrer l'ip et le port du serveur :"));
 
-    // IP    
+    // IP
     m_ip = new QComboBox;
     m_ip->setEditable(true);
 
@@ -55,8 +55,8 @@ DemandeIpPort::DemandeIpPort(QWidget *parent) : QWidget(parent)
     m_connexion->setDefault(true);
     QPushButton * quitter = new QPushButton(tr("Quitter"));
     QHBoxLayout * boutonsLayout = new QHBoxLayout;
-    boutonsLayout->addWidget(m_connexion);
     boutonsLayout->addWidget(quitter);
+    boutonsLayout->addWidget(m_connexion);
     QWidget * boutons = new QWidget;
     boutons->setLayout(boutonsLayout);
     connect(m_connexion, SIGNAL(clicked()), this, SLOT(boutonConnexion()));
@@ -95,4 +95,3 @@ void DemandeIpPort::ipModifie(QString ip)
     else
         m_connexion->setDisabled(true);
 }
-

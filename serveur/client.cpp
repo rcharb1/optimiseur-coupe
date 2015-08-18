@@ -46,14 +46,14 @@ void Client::readyRead()
     QString message(socket->readLine());
     qDebug() << "Le message reçu : " << message <<"\n";
 
-    Task *mytask = new Task(message);
-    mytask->setAutoDelete(true);
+    Task *myTask = new Task(message);
+    myTask->setAutoDelete(true);
     
-    connect(mytask, SIGNAL(Result(QString)), this, SLOT(TaskResult(QString)), Qt::QueuedConnection);
+    connect(myTask, SIGNAL(Result(QString)), this, SLOT(TaskResult(QString)), Qt::QueuedConnection);
 
     qDebug() << "Starting a new task using a thread from the QThreadPool";
     
-    QThreadPool::globalInstance()->start(mytask);   // lance Task::run()
+    QThreadPool::globalInstance()->start(myTask);   // lance Task::run()
 
 }
 
